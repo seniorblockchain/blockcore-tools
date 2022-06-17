@@ -21,8 +21,8 @@ namespace Blockcore.Samples
       {
          this.args = args;
 
-         profileNetwork = ProfileNetwork.Instance;
-         paymentNetwork = Networks.City.Networks.Networks.City.Mainnet.Invoke();
+         //profileNetwork = ProfileNetwork.Instance;
+         //paymentNetwork = Networks.City.Networks.Networks.City.Mainnet.Invoke();
       }
 
       public static long ToUnixEpochDate(DateTime date) => new DateTimeOffset(date).ToUniversalTime().ToUnixTimeSeconds();
