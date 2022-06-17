@@ -27,90 +27,90 @@ namespace Blockcore.Samples
 
       public static long ToUnixEpochDate(DateTime date) => new DateTimeOffset(date).ToUniversalTime().ToUnixTimeSeconds();
 
-      public string GenerateRandomIdentity()
-      {
-         // Generate a random seed and new identity.
-         var mnemonic = new Mnemonic(Wordlist.English, WordCount.Twelve);
+      //public string GenerateRandomIdentity()
+      //{
+      //   // Generate a random seed and new identity.
+      //   var mnemonic = new Mnemonic(Wordlist.English, WordCount.Twelve);
 
-         // string recoveryPhrase = "";
-         // var mnemonic = new Mnemonic(recoveryPhrase);
+      //   // string recoveryPhrase = "";
+      //   // var mnemonic = new Mnemonic(recoveryPhrase);
 
-         ExtKey masterNode = mnemonic.DeriveExtKey();
+      //   ExtKey masterNode = mnemonic.DeriveExtKey();
 
-         ExtPubKey walletRoot = masterNode.Derive(new KeyPath("m/44'")).Neuter();
-         ExtKey identityRoot = masterNode.Derive(new KeyPath("m/302'"));
+      //   ExtPubKey walletRoot = masterNode.Derive(new KeyPath("m/44'")).Neuter();
+      //   ExtKey identityRoot = masterNode.Derive(new KeyPath("m/302'"));
 
-         ExtKey identity0 = identityRoot.Derive(0, true);
-         ExtKey identity1 = identityRoot.Derive(1, true);
+      //   ExtKey identity0 = identityRoot.Derive(0, true);
+      //   ExtKey identity1 = identityRoot.Derive(1, true);
 
-         BitcoinPubKeyAddress identity0Address = identity0.PrivateKey.PubKey.GetAddress(profileNetwork);
-         BitcoinPubKeyAddress identity1Address = identity1.PrivateKey.PubKey.GetAddress(profileNetwork);
+      //   BitcoinPubKeyAddress identity0Address = identity0.PrivateKey.PubKey.GetAddress(profileNetwork);
+      //   BitcoinPubKeyAddress identity1Address = identity1.PrivateKey.PubKey.GetAddress(profileNetwork);
 
-         string identity0Id = identity0Address.ToString();
+      //   string identity0Id = identity0Address.ToString();
 
-         // Create an identity profile that should be signed and pushed.
-         //Identity identityModel = new Identity
-         //{
-         //   Identifier = identity0Id,
-         //   Name = "Blockcore Hub",
-         //   Email = "post@blockcore.net",
-         //   Url = "https://city.hub.liberstad.com",
-         //   Image = "https://www.blockcore.net/assets/blockcore-256x256.png"
-         //};
+      //   // Create an identity profile that should be signed and pushed.
+      //   //Identity identityModel = new Identity
+      //   //{
+      //   //   Identifier = identity0Id,
+      //   //   Name = "Blockcore Hub",
+      //   //   Email = "post@blockcore.net",
+      //   //   Url = "https://city.hub.liberstad.com",
+      //   //   Image = "https://www.blockcore.net/assets/blockcore-256x256.png"
+      //   //};
 
-         //Identity identityModel = new Identity
-         //{
-         //   Identifier = identity0Id,
-         //   Name = "Liberstad Hub",
-         //   Email = "post@liberstad.com",
-         //   Url = "https://city.hub.liberstad.com",
-         //   Image = "https://file.city-chain.org/liberstad-square-logo.png"
-         //};
+      //   //Identity identityModel = new Identity
+      //   //{
+      //   //   Identifier = identity0Id,
+      //   //   Name = "Liberstad Hub",
+      //   //   Email = "post@liberstad.com",
+      //   //   Url = "https://city.hub.liberstad.com",
+      //   //   Image = "https://file.city-chain.org/liberstad-square-logo.png"
+      //   //};
 
-         string key = identity0Address.ToString();
-         string identifier = "did:is:" + key;
+      //   string key = identity0Address.ToString();
+      //   string identifier = "did:is:" + key;
 
-         var identity = new Identity
-         {
-            Identifier = identifier,
-            Name = "John Doe",
-            ShortName = "John",
-            Alias = "JD",
-            Title = "Gone missing",
-            Type = "identity",
-            Timpestamp = ToUnixEpochDate(new DateTime(2020, 2, 2))
-         };
+      //   var identity = new Identity
+      //   {
+      //      Identifier = identifier,
+      //      Name = "John Doe",
+      //      ShortName = "John",
+      //      Alias = "JD",
+      //      Title = "Gone missing",
+      //      Type = "identity",
+      //      Timpestamp = ToUnixEpochDate(new DateTime(2020, 2, 2))
+      //   };
 
-         //JsonWebKey key = new JsonWebKey();
-         //key.KeyId = identity0Id;
+      //   //JsonWebKey key = new JsonWebKey();
+      //   //key.KeyId = identity0Id;
 
-         var header = new Dictionary<string, object>();
-         header.Add("typ", "JWT");
-         header.Add("kid", key);
+      //   var header = new Dictionary<string, object>();
+      //   header.Add("typ", "JWT");
+      //   header.Add("kid", key);
 
-         string token = JWT.Encode(identity, identity0.PrivateKey, JwsAlgorithm.ES256K, header);
-         // This should crash with exception: "Blockcore.Jose.JoseException: Payload is missing required signature".
+      //   string token = JWT.Encode(identity, identity0.PrivateKey, JwsAlgorithm.ES256K, header);
+      //   // This should crash with exception: "Blockcore.Jose.JoseException: Payload is missing required signature".
          
-         Message message = new Message()
-         {
-            Version = 4,
-            Content = token
-         };
+      //   Message message = new Message()
+      //   {
+      //      Version = 4,
+      //      Content = token
+      //   };
 
-         RestClient client = CreateClient();
+      //   RestClient client = CreateClient();
 
-         // Persist the identity.
-         var request2 = new RestRequest($"/api/identity");
-         request2.AddJsonBody(message);
-         IRestResponse<string> response2 = client.Put<string>(request2);
+      //   // Persist the identity.
+      //   var request2 = new RestRequest($"/api/identity");
+      //   request2.AddJsonBody(message);
+      //   IRestResponse<string> response2 = client.Put<string>(request2);
 
-         if (response2.StatusCode != System.Net.HttpStatusCode.OK)
-         {
-            throw new ApplicationException(response2.ErrorMessage);
-         }
+      //   if (response2.StatusCode != System.Net.HttpStatusCode.OK)
+      //   {
+      //      throw new ApplicationException(response2.ErrorMessage);
+      //   }
 
-         return identity0Id;
-      }
+      //   return identity0Id;
+      //}
 
       //public string GenerateHubIdentity()
       //{
@@ -276,8 +276,8 @@ namespace Blockcore.Samples
          //string knownIdentity = GenerateIdentity();
          //Console.WriteLine("Known Identity ID: " + knownIdentity);
 
-         string randomIdentity = GenerateRandomIdentity();
-         Console.WriteLine("Generated Identity ID: " + randomIdentity);
+        // string randomIdentity = GenerateRandomIdentity();
+        // Console.WriteLine("Generated Identity ID: " + randomIdentity);
 
          //for (int i = 0; i < 10000; i++)
          //{
@@ -293,7 +293,7 @@ namespace Blockcore.Samples
          var client = new RestClient($"http://localhost:{paymentNetwork.DefaultAPIPort}");
 
          client.UseNewtonsoftJson();
-         client.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+       //  client.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
 
          return client;
       }

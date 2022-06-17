@@ -297,7 +297,7 @@ namespace Blockcore.Samples
          var client = new RestClient($"http://localhost:{paymentNetwork.DefaultAPIPort}");
 
          client.UseNewtonsoftJson();
-         client.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+        // client.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
 
          return client;
       }
